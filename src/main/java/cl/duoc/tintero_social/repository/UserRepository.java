@@ -1,25 +1,12 @@
 package cl.duoc.tintero_social.repository;
 
 import cl.duoc.tintero_social.model.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepository {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    User findByEmail(String email);
 
-    public User save(User user) {
-        entityManager.persist(user);
-        return user;
-    }
-
-    public User findByEmail(String email) {
-        return entityManager.createQuery(
-                        "SELECT u FROM User u WHERE u.email = :email", User.class)
-                .setParameter("email", email)
-                .getSingleResult();
-    }
 }
